@@ -1,1 +1,1 @@
-dYou have proficiency in the [[Perception]] skill.
+You have proficiency in the [[Perception]] skill.
