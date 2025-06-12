@@ -813,7 +813,42 @@ if (raceNote) {
 }
 
 const strengthScore = 8 + picks + levelUp + racial;
-const maxCarry = strengthScore * 15;
+
+//Race Size
+let sizeMultiplier = 15; // default (Medium)
+const sizeMap = {
+  "Tiny": 7.5,
+  "Small": 15,
+  "Medium": 15,
+  "Large": 30,
+  "Huge": 60,
+  "Gargantuan": 120
+};
+
+if (raceNote) {
+  const raceFile = app.vault.getMarkdownFiles().find(f => f.basename === raceNote);
+  if (raceFile) {
+    const raceContent = await app.vault.read(raceFile);
+    const raceLines = raceContent.split("\n");
+    const sizeStart = raceLines.findIndex(line => line.trim() === "### **Size**");
+
+    if (sizeStart !== -1) {
+      for (let i = sizeStart + 1; i < raceLines.length; i++) {
+        const line = raceLines[i].trim();
+        if (line.startsWith("#") || line === "") break;
+
+        const match = line.match(/\[\[([^\]]+)\]\]/) || line.match(/(Tiny|Small|Medium|Large|Huge|Gargantuan)/i);
+        const size = match ? (match[1] ?? match[0]).trim() : null;
+
+        if (size && sizeMap[size]) {
+          sizeMultiplier = sizeMap[size];
+        }
+      }
+    }
+  }
+}
+
+const maxCarry = strengthScore * sizeMultiplier;
 
 // --- Render containers with overflow check ---
 function renderContainers(nodes) {

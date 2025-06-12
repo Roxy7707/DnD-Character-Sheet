@@ -1,4 +1,10 @@
-.obsidian/workspace.json
+.obsidian/*
+!.obsidian/plugins
+!.obsidian/snippets
+!.obsidian/appearance.json
+!.obsidian/community-plugins.json
+!.obsidian/core-plugins.json
+!.obsidian/templates.json
 .trash/
 ~Sessions/
 Characters/
