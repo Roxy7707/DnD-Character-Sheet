@@ -1,0 +1,1 @@
+Agility and reflexes. Armor Class, Reflex saves, ranged attacks.

@@ -1,0 +1,1 @@
+Endurance and health. HP, Fortitude saves.

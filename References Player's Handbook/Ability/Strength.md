@@ -1,0 +1,1 @@
+Physical power. Melee attacks and damage.

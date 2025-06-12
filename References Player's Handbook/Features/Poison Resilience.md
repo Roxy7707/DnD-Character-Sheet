@@ -1,0 +1,1 @@
+You have advantage on saving throws you make to avoid or end the poisoned condition on yourself. You also have resistance to poison damage.

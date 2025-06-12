@@ -1,0 +1,1 @@
+You have resistance to the damage type associated with your [[Draconic Ancestry]].

@@ -1,0 +1,13 @@
+/* Disable strike-through in markdown mode */
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="x"],
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="X"] {
+    text-decoration: none;
+    color: var(--text-normal);
+}
+
+/* Disable strike-through in preview mode */
+ul > li.task-list-item[data-task="x"],
+ul > li.task-list-item[data-task="X"] {
+    text-decoration: none;
+    color: var(--text-normal);
+}

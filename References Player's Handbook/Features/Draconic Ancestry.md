@@ -1,0 +1,2 @@
+You have [[Draconic Ancestry]]. Choose one type of dragon from the [[Draconic Ancestry Table]]. Your [[Breath Weapon]] and [[Damage Resistance]] are determined by the dragon type, as shown in the table.
+![[Draconic Ancestry Table]]

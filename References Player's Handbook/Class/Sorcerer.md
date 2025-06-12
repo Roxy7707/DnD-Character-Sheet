@@ -1,0 +1,1 @@
+Arcane magic from bloodline. Spontaneous caster.

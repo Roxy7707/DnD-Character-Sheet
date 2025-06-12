@@ -1,0 +1,1 @@
+Double your movement speed for 1 turn; refresh after no movement on your turn.

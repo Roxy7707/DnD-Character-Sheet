@@ -1,0 +1,1 @@
+When you roll a 1 on an attack roll, [[Ability Check]], or [[Saving Throw]], you can reroll the die. You must use the new result, even if it is a 1.

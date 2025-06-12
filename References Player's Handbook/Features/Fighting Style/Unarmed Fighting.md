@@ -1,0 +1,2 @@
+**(TCE).** Your unarmed strikes can deal [[Bludgeoning]] damage equal to 1[[d6]] + your [[Strength]] modifier on a hit. If you aren't wielding any weapons or a shield when you make the attack roll, the [[d6]] becomes a [[d8]].
+- At the start of each of your turns, you can deal 1[[d4]] [[Bludgeoning]] damage to one creature grappled by you.

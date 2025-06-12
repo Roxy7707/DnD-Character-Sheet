@@ -1,0 +1,1 @@
+You have [[Advantage]] on [[Saving Throw|Saving Throws]] against being frightened.

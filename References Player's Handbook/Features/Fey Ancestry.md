@@ -1,0 +1,1 @@
+You have advantage on [[Saving Throw|Saving Throws]] against being [[Charm Person|Charmed]], and magic can't put you to sleep.

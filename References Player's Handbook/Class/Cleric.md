@@ -1,0 +1,1 @@
+Divine caster with heavy armor. Heal, smite, or bless.
