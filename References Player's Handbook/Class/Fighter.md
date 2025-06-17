@@ -1,7 +1,7 @@
 [[Fighter|Fighters]] share an unparalleled mastery with weapons and armor, and a thorough knowledge of the skills of combat. They are well acquainted with death, both meting it out and staring it defiantly in the face.
 
 ### **Hit Points**
-**Hit Die:** [[d10 ]]
+**Hit Die:** [[d10]]
 **HP at 1st Level:** 10 + [[Constitution]] mod
 **HP per Level After 1st:** 6 + [[Constitution]] mod
 

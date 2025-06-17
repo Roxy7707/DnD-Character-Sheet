@@ -1,7 +1,11 @@
 ---
-Cost: 0.01
-Weight: 0.5
-Properties: "[[Ammunition]]"
+Cost: 0.05
+Damage: 1[[d4]] [[Piercing]]
+Weight: 0.25
+Properties:
+  - "[[Finesse]]"
+  - "[[Thrown]]"
+Range: 20/60
 ---
 
 ```dataviewjs

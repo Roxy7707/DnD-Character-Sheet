@@ -650,7 +650,6 @@ const acBon = (page.AcBonus ?? 0) + (equipmentBonuses["AcBonus"] ?? 0);
 const finalAC = page.Ac ?? (baseAC + (shield ? 2 : 0) + acBon);
 
 // --- Hit Points & Hit Dice ---
-const conMod = finalAbilities["Constitution"].mod;
 let hpMax = page.MaxHitPoints ?? null;
 let hitDice = "—";
 
@@ -659,24 +658,48 @@ if (hpMax === null && classNote) {
     if (cFile) {
         const cLines = (await app.vault.read(cFile)).split("\n");
         const idx = cLines.findIndex(l => l.trim() === "### **Hit Points**");
-        let link = null, avg = null;
+
+        let hitDieLink = null;
+        let firstLevelBase = null;
+        let firstLevelModAbility = null;
+        let perLevelBase = null;
+        let perLevelModAbility = null;
+
         if (idx !== -1) {
             for (let i = idx + 1; i < cLines.length; i++) {
                 const ln = cLines[i].trim();
                 if (ln.startsWith("#") || ln === "") break;
 
-                // Match with optional space between brackets
                 const dieMatch = ln.match(/\*\*Hit Die:\*\*\s+\[\[\s*(d\d+)\s*\]\]/i);
-                if (dieMatch) link = `[[${dieMatch[1]}]]`;
+                if (dieMatch) hitDieLink = `[[${dieMatch[1]}]]`;
 
-                // Match first number in "HP per Level After 1st: 6 + [[Constitution]]"
-                const avgMatch = ln.match(/\*\*HP per Level After 1st:\*\*\s*(\d+)\s+\+\s+\[\[Constitution\]\]/i);
-                if (avgMatch) avg = parseInt(avgMatch[1]);
+                const firstMatch = ln.match(/\*\*HP at 1st Level:\*\*\s*(\d+)\s+\+\s+\[\[([^\]]+)\]\]/i);
+                if (firstMatch) {
+                    firstLevelBase = parseInt(firstMatch[1]);
+                    firstLevelModAbility = firstMatch[2];
+                }
+
+                const perMatch = ln.match(/\*\*HP per Level After 1st:\*\*\s*(\d+)\s+\+\s+\[\[([^\]]+)\]\]/i);
+                if (perMatch) {
+                    perLevelBase = parseInt(perMatch[1]);
+                    perLevelModAbility = perMatch[2];
+                }
             }
         }
-        if (link && avg !== null) {
-            hpMax = 10 + conMod + (level - 1) * (avg + conMod);
-            hitDice = `${level}${link}`;
+
+        if (
+            hitDieLink &&
+            firstLevelBase !== null &&
+            firstLevelModAbility &&
+            perLevelBase !== null &&
+            perLevelModAbility &&
+            finalAbilities[firstLevelModAbility] &&
+            finalAbilities[perLevelModAbility]
+        ) {
+            const firstMod = finalAbilities[firstLevelModAbility].mod;
+            const perMod = finalAbilities[perLevelModAbility].mod;
+            hpMax = firstLevelBase + firstMod + (level - 1) * (perLevelBase + perMod);
+            hitDice = `${level}${hitDieLink}`;
         }
     }
 }
@@ -904,6 +927,74 @@ dv.paragraph(`**Total Weight:** <span style="color:${color}">${totalWeight.toFix
 
 ![[Light Crossbow]]
 
+```dataviewjs
+const file = dv.current().file;
+const page = dv.page(file.path);
+const level = page.level ?? 1;
+const files = app.vault.getMarkdownFiles();
+
+// --- Extract Class Link from Character Note ---
+const content = await app.vault.read(app.vault.getAbstractFileByPath(file.path));
+const lines = content.split("\n");
+
+function extractLinkFromHeading(label) {
+  const start = lines.findIndex(l => l.trim() === label);
+  if (start === -1) return null;
+  for (let i = start + 1; i < lines.length; i++) {
+    const ln = lines[i].trim();
+    if (ln.startsWith("#") || ln === "") break;
+    const m = ln.match(/\[\[([^\]]+)\]\]/);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+const className = extractLinkFromHeading("### **Class**");
+if (!className) return;
+
+const tableFileName = `${className} Level Table`;
+const tableFile = files.find(f => f.basename === tableFileName);
+if (!tableFile) return;
+
+// --- Read Frontmatter from Level Table ---
+const cache = app.metadataCache.getFileCache(tableFile);
+const fm = cache?.frontmatter;
+if (!fm) return;
+
+// --- Locate the Spellcasting Array ---
+let casting = null;
+for (let [key, val] of Object.entries(fm)) {
+  if (Array.isArray(val) && val.every(e => e.level !== undefined && e.slots !== undefined)) {
+    casting = val;
+    break;
+  }
+}
+if (!casting) return;
+
+// --- Match Current Level ---
+const entry = casting.find(e => e.level === level);
+if (!entry || entry.spellsKnown === null) return;
+
+let header = "**Spells**";
+if (entry.cantripsKnown != null && entry.cantripsKnown > 0) {
+  header = `**Spells** ([[Cantrip Spell Table|Cantrips Known]]: ${entry.cantripsKnown})`;
+}
+// --- Build Table (Filtered Columns) ---
+const activeLevels = entry.slots
+  .map((val, i) => ({ i, val }))
+  .filter(e => e.val > 0)
+  .map(e => e.i);
+
+const headers = ["Spells Known", ...activeLevels.map(i => `Lvl ${i + 1}`)];
+const row = [
+  entry.spellsKnown,
+  ...activeLevels.map(i => entry.slots[i])
+];
+
+// --- Render ---
+dv.header(3, header);
+dv.table(headers, [row]);
+```
 ### **Features**
 ##### **Race**
 ![[Damage Resistance]]
@@ -956,14 +1047,14 @@ dv.paragraph(`**Total Weight:** <span style="color:${color}">${totalWeight.toFix
 - Tribal warrior look with fur cloak, armor
 
 ### **Backstory**
-Graxx never asked for more than a steady job, a roof to sleep under, and a fight now and then to keep the blood warm. Born in the alleys of Duram’s Blackscale District, he clawed his way up from an urchin’s life of grime and hunger to become one of the most feared bouncers in the city’s underbelly. His territory was The Shattered Chalice, a tavern where nobles slummed and criminals dealt beneath flickering lanternlight.
+Draxx never asked for more than a steady job, a roof to sleep under, and a fight now and then to keep the blood warm. Born in the alleys of Duram’s Blackscale District, he clawed his way up from an urchin’s life of grime and hunger to become one of the most feared bouncers in the city’s underbelly. His territory was The Shattered Chalice, a tavern where nobles slummed and criminals dealt beneath flickering lanternlight.
 
-He kept peace with his fists, his glare, and the reputation of his greataxe, Ashrender, which hung behind the bar like a silent threat. But it wasn’t just muscle that earned Graxx respect—he knew who to let in, who to throw out, and who to keep an eye on. The Chalice was neutral ground… until the night King Terra Ny died.
+He kept peace with his fists, his glare, and the reputation of his greataxe, Ashrender, which hung behind the bar like a silent threat. But it wasn’t just muscle that earned Draxx respect—he knew who to let in, who to throw out, and who to keep an eye on. The Chalice was neutral ground… until the night King Terra Ny died.
 
-When Maldraxon seized power, the Order of the Celeste raided every known den of dissent. The Shattered Chalice was burned to the ground in the chaos—its patrons executed in the street. Graxx barely escaped with his life after refusing to surrender a rebel courier hiding behind the bar. The Order branded him a traitor for “shielding enemies of the throne.”
+When Maldraxon seized power, the Order of the Celeste raided every known den of dissent. The Shattered Chalice was burned to the ground in the chaos—its patrons executed in the street. Draxx barely escaped with his life after refusing to surrender a rebel courier hiding behind the bar. The Order branded him a traitor for “shielding enemies of the throne.”
 
-Now marked, hunted, and furious, Graxx fled the city. He doesn’t speak of the bodies he stepped over on the way out. What matters is that he’s alive—and so is Ashrender.
+Now marked, hunted, and furious, Draxx fled the city. He doesn’t speak of the bodies he stepped over on the way out. What matters is that he’s alive—and so is Ashrender.
 
-From the port of Ankh Marrah, he watches ships leave, always scanning the crowd for a familiar face, or a sign of Princess Aleena. Maybe she’s dead. Maybe not. But Graxx knows one thing:
+From the port of Ankh Marrah, he watches ships leave, always scanning the crowd for a familiar face, or a sign of Princess Aleena. Maybe she’s dead. Maybe not. But Draxx knows one thing:
 
 He was once the gatekeeper of a single tavern. Now, he aims to tear down the doors of a kingdom.

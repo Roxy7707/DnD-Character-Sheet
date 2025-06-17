@@ -1,7 +1,8 @@
 ---
-PlayerName: Evan S.
+PlayerName: Name
 Level: 1
 Experience: 0
+CurrentHitPoints: 1
 Strength: 0, 0
 Dexterity: 0, 0
 Constitution: 0, 0
@@ -11,7 +12,6 @@ Charisma: 0, 0
 AcBonus: 0
 InitiativeBonus: 0
 SpeedBonus: 0
-CurrentHitPoints: 0
 TemporaryHitPoints: 0
 DeathSaveSuccesses: 0
 DeathSaveFailures: 0
@@ -650,7 +650,6 @@ const acBon = (page.AcBonus ?? 0) + (equipmentBonuses["AcBonus"] ?? 0);
 const finalAC = page.Ac ?? (baseAC + (shield ? 2 : 0) + acBon);
 
 // --- Hit Points & Hit Dice ---
-const conMod = finalAbilities["Constitution"].mod;
 let hpMax = page.MaxHitPoints ?? null;
 let hitDice = "—";
 
@@ -659,24 +658,48 @@ if (hpMax === null && classNote) {
     if (cFile) {
         const cLines = (await app.vault.read(cFile)).split("\n");
         const idx = cLines.findIndex(l => l.trim() === "### **Hit Points**");
-        let link = null, avg = null;
+
+        let hitDieLink = null;
+        let firstLevelBase = null;
+        let firstLevelModAbility = null;
+        let perLevelBase = null;
+        let perLevelModAbility = null;
+
         if (idx !== -1) {
             for (let i = idx + 1; i < cLines.length; i++) {
                 const ln = cLines[i].trim();
                 if (ln.startsWith("#") || ln === "") break;
 
-                // Match with optional space between brackets
                 const dieMatch = ln.match(/\*\*Hit Die:\*\*\s+\[\[\s*(d\d+)\s*\]\]/i);
-                if (dieMatch) link = `[[${dieMatch[1]}]]`;
+                if (dieMatch) hitDieLink = `[[${dieMatch[1]}]]`;
 
-                // Match first number in "HP per Level After 1st: 6 + [[Constitution]]"
-                const avgMatch = ln.match(/\*\*HP per Level After 1st:\*\*\s*(\d+)\s+\+\s+\[\[Constitution\]\]/i);
-                if (avgMatch) avg = parseInt(avgMatch[1]);
+                const firstMatch = ln.match(/\*\*HP at 1st Level:\*\*\s*(\d+)\s+\+\s+\[\[([^\]]+)\]\]/i);
+                if (firstMatch) {
+                    firstLevelBase = parseInt(firstMatch[1]);
+                    firstLevelModAbility = firstMatch[2];
+                }
+
+                const perMatch = ln.match(/\*\*HP per Level After 1st:\*\*\s*(\d+)\s+\+\s+\[\[([^\]]+)\]\]/i);
+                if (perMatch) {
+                    perLevelBase = parseInt(perMatch[1]);
+                    perLevelModAbility = perMatch[2];
+                }
             }
         }
-        if (link && avg !== null) {
-            hpMax = 10 + conMod + (level - 1) * (avg + conMod);
-            hitDice = `${level}${link}`;
+
+        if (
+            hitDieLink &&
+            firstLevelBase !== null &&
+            firstLevelModAbility &&
+            perLevelBase !== null &&
+            perLevelModAbility &&
+            finalAbilities[firstLevelModAbility] &&
+            finalAbilities[perLevelModAbility]
+        ) {
+            const firstMod = finalAbilities[firstLevelModAbility].mod;
+            const perMod = finalAbilities[perLevelModAbility].mod;
+            hpMax = firstLevelBase + firstMod + (level - 1) * (perLevelBase + perMod);
+            hitDice = `${level}${hitDieLink}`;
         }
     }
 }
@@ -876,10 +899,86 @@ const color = ratio > 1 ? "red" : ratio > 2 / 3 ? "orange" : ratio > 1 / 3 ? "ye
 dv.paragraph(`**Total Weight:** <span style="color:${color}">${totalWeight.toFixed(2)} / ${Math.floor(maxCarry)} lb</span>`);
 ```
 
+### **Weapons**
+![[]]
+
+```dataviewjs
+const file = dv.current().file;
+const page = dv.page(file.path);
+const level = page.level ?? 1;
+const files = app.vault.getMarkdownFiles();
+
+// --- Extract Class Link from Character Note ---
+const content = await app.vault.read(app.vault.getAbstractFileByPath(file.path));
+const lines = content.split("\n");
+
+function extractLinkFromHeading(label) {
+  const start = lines.findIndex(l => l.trim() === label);
+  if (start === -1) return null;
+  for (let i = start + 1; i < lines.length; i++) {
+    const ln = lines[i].trim();
+    if (ln.startsWith("#") || ln === "") break;
+    const m = ln.match(/\[\[([^\]]+)\]\]/);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+const className = extractLinkFromHeading("### **Class**");
+if (!className) return;
+
+const tableFileName = `${className} Level Table`;
+const tableFile = files.find(f => f.basename === tableFileName);
+if (!tableFile) return;
+
+// --- Read Frontmatter from Level Table ---
+const cache = app.metadataCache.getFileCache(tableFile);
+const fm = cache?.frontmatter;
+if (!fm) return;
+
+// --- Locate the Spellcasting Array ---
+let casting = null;
+for (let [key, val] of Object.entries(fm)) {
+  if (Array.isArray(val) && val.every(e => e.level !== undefined && e.slots !== undefined)) {
+    casting = val;
+    break;
+  }
+}
+if (!casting) return;
+
+// --- Match Current Level ---
+const entry = casting.find(e => e.level === level);
+if (!entry || entry.spellsKnown === null) return;
+
+let header = "**Spells**";
+if (entry.cantripsKnown != null && entry.cantripsKnown > 0) {
+  header = `**Spells** ([[Cantrip Spell Table|Cantrips Known]]: ${entry.cantripsKnown})`;
+}
+// --- Build Table (Filtered Columns) ---
+const activeLevels = entry.slots
+  .map((val, i) => ({ i, val }))
+  .filter(e => e.val > 0)
+  .map(e => e.i);
+
+const headers = ["Spells Known", ...activeLevels.map(i => `Lvl ${i + 1}`)];
+const row = [
+  entry.spellsKnown,
+  ...activeLevels.map(i => entry.slots[i])
+];
+
+// --- Render ---
+dv.header(3, header);
+dv.table(headers, [row]);
+```
 ### **Features**
 ##### **Race**
+![[]]
+
 ##### **Class**
+![[]]
+
 ##### **Background**
+![[]]
 
 ### **Race**
 ![[]]
@@ -887,7 +986,6 @@ dv.paragraph(`**Total Weight:** <span style="color:${color}">${totalWeight.toFix
 ### **Class**
 ![[]]
 ##### **Selected Skills**
-![[]]
 ![[]]
 
 ### **Background**
