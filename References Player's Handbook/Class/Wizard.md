@@ -1,1 +1,26 @@
-Masters of arcane knowledge who learn spells through study and dedication. Wizards cast a vast array of powerful spells, but are physically frail and must rely on magic for both offense and defense. They use [[Intelligence]] as their primary spellcasting ability.
+Description
+
+### **Hit Points**
+**Hit Die:** [[]]
+**HP at 1st Level:** ? + [[]] mod
+**HP per Level After 1st:** ? + [[]] mod
+
+### **Proficiencies**
+##### **Armor**
+
+##### **Weapons**
+
+##### **Tools**
+
+
+### **Saving Throws**
+[[]]
+[[]]
+
+### **Skills**
+Choose two skills from 
+
+### **Equipment**
+
+
+![[Wizard Level Table]]

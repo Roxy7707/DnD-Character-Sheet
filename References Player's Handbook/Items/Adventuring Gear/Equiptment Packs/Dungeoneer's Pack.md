@@ -66,7 +66,7 @@ dv.table(["Field", "Value"], fields);
 - [ ] [[Crowbar]]
 - [ ] [[Hammer]]
 - [ ] [[Pitons]] x10
-- [ ] [[Torches]] x10
+- [ ] [[Torch]] x10
 - [ ] [[Tinderbox]]
 - [ ] [[Rations]] x10
 - [ ] [[Waterskin]] x0.2

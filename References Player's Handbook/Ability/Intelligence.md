@@ -1,1 +1,1 @@
-Reasoning and memory. Skill points, knowledge.
+Reasoning and memory

@@ -1,85 +1,85 @@
 ---
-rangerSpellcasting:
+Spellcasting:
   - level: 1
     spellsKnown: null
     cantripsKnown: 0
-    slots: [0, 0, 0, 0, 0]
+    slots: [0, 0, 0, 0, 0, 0, 0, 0, 0]
   - level: 2
     spellsKnown: 2
     cantripsKnown: 0
-    slots: [2, 0, 0, 0, 0]
+    slots: [2, 0, 0, 0, 0, 0, 0, 0, 0]
   - level: 3
     spellsKnown: 3
     cantripsKnown: 0
-    slots: [3, 0, 0, 0, 0]
+    slots: [3, 0, 0, 0, 0, 0, 0, 0, 0]
   - level: 4
     spellsKnown: 3
     cantripsKnown: 0
-    slots: [3, 0, 0, 0, 0]
+    slots: [3, 0, 0, 0, 0, 0, 0, 0, 0]
   - level: 5
     spellsKnown: 4
     cantripsKnown: 0
-    slots: [4, 2, 0, 0, 0]
+    slots: [4, 2, 0, 0, 0, 0, 0, 0, 0]
   - level: 6
     spellsKnown: 4
     cantripsKnown: 0
-    slots: [4, 2, 0, 0, 0]
+    slots: [4, 2, 0, 0, 0, 0, 0, 0, 0]
   - level: 7
     spellsKnown: 5
     cantripsKnown: 0
-    slots: [4, 3, 0, 0, 0]
+    slots: [4, 3, 0, 0, 0, 0, 0, 0, 0]
   - level: 8
     spellsKnown: 5
     cantripsKnown: 0
-    slots: [4, 3, 0, 0, 0]
+    slots: [4, 3, 0, 0, 0, 0, 0, 0, 0]
   - level: 9
     spellsKnown: 6
     cantripsKnown: 0
-    slots: [4, 3, 2, 0, 0]
+    slots: [4, 3, 2, 0, 0, 0, 0, 0, 0]
   - level: 10
     spellsKnown: 6
     cantripsKnown: 0
-    slots: [4, 3, 2, 0, 0]
+    slots: [4, 3, 2, 0, 0, 0, 0, 0, 0]
   - level: 11
     spellsKnown: 7
     cantripsKnown: 0
-    slots: [4, 3, 3, 0, 0]
+    slots: [4, 3, 3, 0, 0, 0, 0, 0, 0]
   - level: 12
     spellsKnown: 7
     cantripsKnown: 0
-    slots: [4, 3, 3, 0, 0]
+    slots: [4, 3, 3, 0, 0, 0, 0, 0, 0]
   - level: 13
     spellsKnown: 8
     cantripsKnown: 0
-    slots: [4, 3, 3, 1, 0]
+    slots: [4, 3, 3, 1, 0, 0, 0, 0, 0]
   - level: 14
     spellsKnown: 8
     cantripsKnown: 0
-    slots: [4, 3, 3, 1, 0]
+    slots: [4, 3, 3, 1, 0, 0, 0, 0, 0]
   - level: 15
     spellsKnown: 9
     cantripsKnown: 0
-    slots: [4, 3, 3, 2, 0]
+    slots: [4, 3, 3, 2, 0, 0, 0, 0, 0]
   - level: 16
     spellsKnown: 9
     cantripsKnown: 0
-    slots: [4, 3, 3, 2, 0]
+    slots: [4, 3, 3, 2, 0, 0, 0, 0, 0]
   - level: 17
     spellsKnown: 10
     cantripsKnown: 0
-    slots: [4, 3, 3, 3, 1]
+    slots: [4, 3, 3, 3, 1, 0, 0, 0, 0]
   - level: 18
     spellsKnown: 10
     cantripsKnown: 0
-    slots: [4, 3, 3, 3, 1]
+    slots: [4, 3, 3, 3, 1, 0, 0, 0, 0]
   - level: 19
     spellsKnown: 11
     cantripsKnown: 0
-    slots: [4, 3, 3, 3, 2]
+    slots: [4, 3, 3, 3, 2, 0, 0, 0, 0]
   - level: 20
     spellsKnown: 11
     cantripsKnown: 0
-    slots: [4, 3, 3, 3, 2]
+    slots: [4, 3, 3, 3, 2, 0, 0, 0, 0]
 ---
 ```dataviewjs
 const rangerLevels = [

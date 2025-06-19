@@ -1,5 +1,5 @@
 ---
-rangerSpellcasting:
+Spellcasting:
   - level: 1
     spellsKnown: 2
     cantripsKnown: 4
@@ -83,26 +83,26 @@ rangerSpellcasting:
 ---
 ```dataviewjs
 const rangerLevels = [
-  { level: "1st", bonus: "+2", features: "Blank" },
-  { level: "2nd", bonus: "+2", features: "Blank" },
-  { level: "3rd", bonus: "+2", features: "Blank" },
-  { level: "4th", bonus: "+2", features: "Blank" },
-  { level: "5th", bonus: "+3", features: "Blank" },
-  { level: "6th", bonus: "+3", features: "Blank" },
-  { level: "7th", bonus: "+3", features: "Blank" },
-  { level: "8th", bonus: "+3", features: "Blank" },
-  { level: "9th", bonus: "+4", features: "Blank" },
-  { level: "10th", bonus: "+4", features: "Blank" },
-  { level: "11th", bonus: "+4", features: "Blank" },
-  { level: "12th", bonus: "+4", features: "Blank" },
-  { level: "13th", bonus: "+5", features: "Blank" },
-  { level: "14th", bonus: "+5", features: "Blank" },
-  { level: "15th", bonus: "+5", features: "Blank" },
-  { level: "16th", bonus: "+5", features: "Blank" },
-  { level: "17th", bonus: "+6", features: "Blank" },
-  { level: "18th", bonus: "+6", features: "Blank" },
-  { level: "19th", bonus: "+6", features: "Blank" },
-  { level: "20th", bonus: "+6", features: "Blank" },
+  { level: "1st", bonus: "+2", features: "[[Spellcasting]], [[Sorcerous Origin]]" },
+  { level: "2nd", bonus: "+2", features: "[[Font of Magic]]" },
+  { level: "3rd", bonus: "+2", features: "[[Metamagic]]" },
+  { level: "4th", bonus: "+2", features: "[[Ability Score Improvement]], _[[Sorcerous Versatility]] (Optional)_" },
+  { level: "5th", bonus: "+3", features: "_[[Magical Guidance]] (Optional)_" },
+  { level: "6th", bonus: "+3", features: "[[Sorcerous Origin]] feature" },
+  { level: "7th", bonus: "+3", features: "" },
+  { level: "8th", bonus: "+3", features: "[[Ability Score Improvement]], _[[Sorcerous Versatility]] (Optional)_" },
+  { level: "9th", bonus: "+4", features: "" },
+  { level: "10th", bonus: "+4", features: "[[Metamagic]]" },
+  { level: "11th", bonus: "+4", features: "" },
+  { level: "12th", bonus: "+4", features: "[[Ability Score Improvement]], _[[Sorcerous Versatility]] (Optional)_" },
+  { level: "13th", bonus: "+5", features: "" },
+  { level: "14th", bonus: "+5", features: "[[Sorcerous Origin]] feature" },
+  { level: "15th", bonus: "+5", features: "" },
+  { level: "16th", bonus: "+5", features: "[[Ability Score Improvement]], _[[Sorcerous Versatility]] (Optional)_" },
+  { level: "17th", bonus: "+6", features: "[[Metamagic]]" },
+  { level: "18th", bonus: "+6", features: "[[Sorcerous Origin]] feature" },
+  { level: "19th", bonus: "+6", features: "[[Ability Score Improvement]], _[[Sorcerous Versatility]] (Optional)_" },
+  { level: "20th", bonus: "+6", features: "[[Sorcerous Restoration]]" },
 ];
 
 dv.table(

@@ -4,7 +4,7 @@ Properties:
   - "[[Finesse]]"
   - "[[Thrown]]"
 Range: 5/15
-Duration: 1
+Duration: 1 Action
 ---
 
 ```dataviewjs

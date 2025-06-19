@@ -740,7 +740,7 @@ dv.table(["Stat", "Value"], [
 - [x] [[Hemp Rope]] x50 ft
 - [x] [[Backpack]]
 	- [ ] [[Pitons]] x10
-	- [ ] [[Torches]] x10
+	- [ ] [[Torch]] x10
 	- [ ] [[Tinderbox]]
 	- [ ] [[Rations]] x10
 	- [ ] Pet Mouse
@@ -781,11 +781,11 @@ if (start !== -1) {
     const indent = raw.match(/^(\s*)/)[0].length;
     const line = raw.trim();
     const isChecked = line.startsWith("- [x]");
-    const m = line.match(/- \[.\]\s+(?:\[\[)?([^\]\]]+)(?:\]\])?\s*(?:x(\d+))?/);
+    const m = line.match(/- \[.\]\s+(?:\[\[)?([^\]\]]+)(?:\]\])?\s*(?:x(\d*\.?\d+))?/);
     if (!m) continue;
 
     const name = m[1];
-    const count = m[2] ? parseInt(m[2]) : 1;
+    const count = m[2] ? parseFloat(m[2]) : 1;
     const node = { name, count, children: [], indent, isChecked };
 
     while (stack.length && indent <= stack[stack.length - 1].indent) {
@@ -973,23 +973,45 @@ if (!casting) return;
 
 // --- Match Current Level ---
 const entry = casting.find(e => e.level === level);
-if (!entry || entry.spellsKnown === null) return;
+if (!entry) return;
 
+const noSpellsKnown = entry.spellsKnown == null;
+const noCantrips = entry.cantripsKnown == null || entry.cantripsKnown === 0;
+const noSpellSlots = !entry.slots || entry.slots.every(s => s === 0);
+
+if (noSpellsKnown && noCantrips && noSpellSlots) return;
+
+// --- Build Header ---
 let header = "**Spells**";
-if (entry.cantripsKnown != null && entry.cantripsKnown > 0) {
+if (!noCantrips) {
   header = `**Spells** ([[Cantrip Spell Table|Cantrips Known]]: ${entry.cantripsKnown})`;
 }
+
+// --- Get Ordinal ---
+function getOrdinal(n) {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
 // --- Build Table (Filtered Columns) ---
 const activeLevels = entry.slots
   .map((val, i) => ({ i, val }))
   .filter(e => e.val > 0)
   .map(e => e.i);
 
-const headers = ["Spells Known", ...activeLevels.map(i => `Lvl ${i + 1}`)];
-const row = [
-  entry.spellsKnown,
-  ...activeLevels.map(i => entry.slots[i])
-];
+const headers = [];
+const row = [];
+
+if (!noSpellsKnown) {
+  headers.push("Spells Known");
+  row.push(entry.spellsKnown);
+}
+
+for (let i of activeLevels) {
+  headers.push(`[[${getOrdinal(i + 1)} Level Spell Table|Lvl ${i + 1}]]`);
+  row.push(entry.slots[i]);
+}
 
 // --- Render ---
 dv.header(3, header);

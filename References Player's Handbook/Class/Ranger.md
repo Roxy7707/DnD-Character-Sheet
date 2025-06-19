@@ -9,7 +9,7 @@ Far from the bustle of cities and towns, past the hedges that shelter the most d
 ##### **Armor**
 Light Armor, Medium Armor, Shields
 ##### **Weapons**
-[[Weapon Table|Simple Weapons]], [[Weapon Table|Martial Weapons]]
+[[All Weapon Table|Simple Weapons]], [[All Weapon Table|Martial Weapons]]
 ##### **Tools**
 None
 
@@ -23,7 +23,7 @@ Choose three from [[Animal Handling]], [[Athletics]], [[Insight]], [[Investigati
 ### **Equipment**
 You start with the following equipment, in addition to the equipment granted by your background:
 - (a) [[Scale Mail]] or (b) [[Leather]]
-- (a) two [[Shortsword|Shortswords]] or (b) two [[Weapon Table|Simple Melee Weapons]]
+- (a) two [[Shortsword|Shortswords]] or (b) two [[All Weapon Table|Simple Melee Weapons]]
 - (a) a [[Dungeoneer's Pack]] or (b) an [[Explorer's Pack]]
 - A [[Longbow]] and a [[Quiver]] of 20 [[Arrows]]
 

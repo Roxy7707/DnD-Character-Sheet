@@ -22,7 +22,7 @@ Choose two from [[Arcana]], [[Deception]], [[Insight]], [[Intimidation]], [[Pers
 
 ### **Equipment**
 You start with the following equipment, in addition to the equipment granted by your background:
-- (a) a [[Light Crossbow]] and 20 [[Bolts]] or (b) any [[Weapon Table|Simple Weapon]]
+- (a) a [[Light Crossbow]] and 20 [[Bolts]] or (b) any [[All Weapon Table|Simple Weapon]]
 - (a) a [[Component Pouch]] or (b) an [[Arcane Focus Table|Arcane Focus]]
 - (a) a [[Dungeoneer's Pack]] or (b) an [[Explorer's Pack]]
 - Two [[Dagger|Daggers]]

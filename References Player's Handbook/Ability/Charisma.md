@@ -1,1 +1,1 @@
-Force of personality.
+Force of personality

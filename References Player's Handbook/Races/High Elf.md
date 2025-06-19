@@ -18,12 +18,12 @@ The sun elves of Faerûn (also called gold elves or sunrise elves) have bronze s
 ```dataviewjs
 dv.table(
     ["Spell Name", "School", "Casting Time", "Range", "Duration", "Components"],
-    dv.pages('"References/Spells"')
+    dv.pages(`"References Player's Handbook/Spells"`)
         .where(p =>
             p.spellclass &&
-            p.spellclass.some(c => c.path === "References/Spells/Tables/Wizard Spell Table.md") &&
+            p.spellclass.some(c => c.path === "References Player's Handbook/Spells/Tables/Wizard Spell Table.md") &&
             p.spelllevel &&
-            p.spelllevel.path === "References/Spells/Tables/Cantrip Spell Table.md"
+            p.spelllevel.path === "References Player's Handbook/Spells/Tables/Cantrip Spell Table.md"
         )
         .sort(p => p["SpellName"].toString(), 'asc')
         .map(p => {
@@ -43,7 +43,7 @@ dv.table(
                 : linkedComponents;
 
             return [
-                p["SpellName"],
+                p.file.link,
                 p.school,
                 p["CastingTime"],
                 p.range,

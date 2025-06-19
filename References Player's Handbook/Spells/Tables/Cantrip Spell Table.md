@@ -2,7 +2,7 @@
 ```dataviewjs
 dv.table(
     ["Category", "School", "Casting Time", "Range", "Duration", "Components"],
-    dv.pages('"References/Spells"')
+    dv.pages(`"References Player's Handbook/Spells"`)
         .where(p => p.spelllevel && p.spelllevel.path === dv.current().file.path)
         .sort(p => p.file.name, 'asc')
         .map(p => {

@@ -1,1 +1,1 @@
-Perception and insight.
+Perception and insight
